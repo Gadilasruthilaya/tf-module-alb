@@ -40,3 +40,18 @@ resource "aws_lb" "main" {
   }, var.tags)
 }
 
+resource "aws_lb_listener" "main" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = var.port
+  protocol          = "HTTP"
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Default error"
+      status_code  = "500"
+    }
+  }
+}
